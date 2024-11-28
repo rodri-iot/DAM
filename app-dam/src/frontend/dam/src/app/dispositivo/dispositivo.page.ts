@@ -1,59 +1,83 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar } from '@ionic/angular/standalone';
-import { Observable, Subscription, fromEvent, interval } from 'rxjs';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { DispositivoService } from '../services/dispositivo.service';
+import { Dispositivo } from '../interfaces/dispositivo';
+import {
+  IonContent,
+  IonHeader,
+  IonToolbar,
+  IonTitle,
+  IonButton,
+  IonCard,
+  IonCardHeader,
+  IonCardTitle,
+  IonCardSubtitle,
+} from '@ionic/angular/standalone';
+import { CommonModule } from '@angular/common';
+
 
 @Component({
   selector: 'app-dispositivo',
   templateUrl: './dispositivo.page.html',
   styleUrls: ['./dispositivo.page.scss'],
   standalone: true,
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule]
+  imports: [
+    IonContent,
+    IonHeader,
+    IonToolbar,
+    IonTitle,
+    IonButton,
+    IonCard,
+    IonCardHeader,
+    IonCardTitle,
+    IonCardSubtitle,
+    CommonModule,
+  ],
 })
-export class DispositivoPage implements OnInit, OnDestroy {
+export class DispositivoPage implements OnInit {
+  dispositivo!: Dispositivo;
+  dispositivoId!: number;
 
-  observable$: Observable<any>
-  dispositivos: any = []
-  // subscription: Subscription
 
-  mouseMove$ = fromEvent(document, 'mousemove')
+  constructor(
+    private route: ActivatedRoute,
+    private dispositivoService: DispositivoService,
+    private router: Router
+  ) {}
 
-  constructor(private _dispositivoService: DispositivoService) {
-    this.observable$ = interval(1000)
 
-    // this.subscription = this.mouseMove$.subscribe((evt: any) => {
-    //   console.log(`Coords: ${evt.clientX} X ${evt.clientY} Y`)
-    // })
-    // this.subscription = this.observable$.subscribe((value) => {
-    //   console.log(value)
-    // })
+  async ngOnInit() {
+    this.dispositivoId = Number(this.route.snapshot.paramMap.get('id'));
+    await this.cargarDispositivo();
   }
 
-  // subscribe () {
-  //   this.subscription = this.observable$.subscribe((value) => {
-  //     console.log(value)
-  //   })
-  // }
 
-  // unsubscribe () {
-  //   this.subscription.unsubscribe()
-  // }
-
-  ngOnInit () {
-    this._dispositivoService.getDispositivos()
-      .then((data) => {
-        this.dispositivos = data
-      })
-      .catch((error) => {
-        console.log(error)
-      })
-    console.log(this.dispositivos)
+  async cargarDispositivo() {
+    try {
+      this.dispositivo = await this.dispositivoService.getDispositivoById(
+        this.dispositivoId
+      );
+    } catch (error) {
+      console.error('Error al cargar el dispositivo:', error);
+    }
   }
 
-  ngOnDestroy () {
-    // this.subscription.unsubscribe()
+
+  async cambiarEstadoValvula(apertura: boolean) {
+    try {
+      await this.dispositivoService.cambiarEstadoValvula(
+        this.dispositivoId,
+        apertura
+      );
+      alert(`Válvula ${apertura ? 'abierta' : 'cerrada'} correctamente`);
+    } catch (error) {
+      console.error('Error al cambiar el estado de la válvula:', error);
+      alert('No se pudo cambiar el estado de la válvula.');
+    }
   }
 
+  verMediciones() {
+    this.router.navigate([`/dispositivo`, this.dispositivoId, 'mediciones']);
+  }
+    
 }

@@ -1,13 +1,55 @@
-import { Component } from '@angular/core';
-import { IonHeader, IonToolbar, IonTitle, IonContent } from '@ionic/angular/standalone';
+import { Component, OnInit } from '@angular/core';
+import { DispositivoService } from '../services/dispositivo.service';
+import { Dispositivo } from '../interfaces/dispositivo';
+import { Router } from '@angular/router';
+import { IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonList, IonToolbar, IonHeader, IonTitle, IonSpinner } from '@ionic/angular/standalone';
+import { CommonModule } from '@angular/common';
+import { IonContent } from '@ionic/angular/standalone';
 
 @Component({
   selector: 'app-home',
-  templateUrl: 'home.page.html',
-  styleUrls: ['home.page.scss'],
+  templateUrl: './home.page.html',
+  styleUrls: ['./home.page.scss'],
   standalone: true,
-  imports: [IonHeader, IonToolbar, IonTitle, IonContent],
+  imports: [
+    IonHeader,
+    IonToolbar,
+    IonTitle,
+    IonContent,
+    IonCard,
+    IonCardHeader,
+    IonCardTitle,
+    IonCardSubtitle,
+    IonList,
+    IonSpinner,
+    CommonModule,
+  ],
 })
-export class HomePage {
-  constructor() {}
+export class HomePage implements OnInit {
+  dispositivos: Dispositivo[] = []; // Propiedad almacenar dispositivos
+
+
+  constructor(
+    private dispositivoService: DispositivoService, // Servicio para cargar dispositivos
+    private router: Router // Router para navegar a los detalles
+  ) {}
+
+
+  // Método que se ejecuta al inicializar el componente
+  isLoading: boolean = true;
+  
+  async ngOnInit() {
+    try {
+      this.dispositivos = await this.dispositivoService.getDispositivos(); // Llama al servicio y almacena los dispositivos
+    } catch (error) {
+      console.error('Error al cargar dispositivos:', error);
+    } finally {
+      this.isLoading = false;
+    }
+  }
+
+  // Método para navegar a la página de detalles de un dispositivo
+  verDetalle(dispositivoId: number) {
+    this.router.navigate([`/dispositivo`, dispositivoId]); // Navega a /dispositivo/:id
+  }
 }
