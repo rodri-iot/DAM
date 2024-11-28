@@ -9,9 +9,13 @@ var app = express();
 var pool = require('./mysql-connector');
 const routerDispositivo = require('./routes/dispositivo')
 
+
 var corsOptions = {
     origin: '*',
-    optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+    methods: ['GET', 'POST', 'PUT', 'DELETE'], // Métodos permitidos
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
+    credentials: true // Permitir cookies
 }
 
 // to parse application/json
