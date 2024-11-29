@@ -171,9 +171,6 @@ ALTER TABLE `Log_Riegos`
 --
 -- AUTO_INCREMENT de la tabla `Mediciones`
 --
-ALTER TABLE `Mediciones`
-  MODIFY `medicionId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
-
 --
 -- Restricciones para tablas volcadas
 --
