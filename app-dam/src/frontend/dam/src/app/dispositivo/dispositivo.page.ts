@@ -37,6 +37,7 @@ import { CommonModule } from '@angular/common';
 export class DispositivoPage implements OnInit {
   dispositivo!: Dispositivo;
   dispositivoId!: number;
+  ultimaMedicion: { valor: number } | null = null;
 
 
   constructor(
@@ -49,6 +50,7 @@ export class DispositivoPage implements OnInit {
   async ngOnInit() {
     this.dispositivoId = Number(this.route.snapshot.paramMap.get('id'));
     await this.cargarDispositivo();
+    await this.cargarUltimaMedicion(); // Llamada para cargar ultima medicion
   }
 
 
@@ -57,6 +59,11 @@ export class DispositivoPage implements OnInit {
       this.dispositivo = await this.dispositivoService.getDispositivoById(
         this.dispositivoId
       );
+
+      // Obtener la última medición del dispositivo
+      const medicion = await this.dispositivoService.getUltimaMedicion(this.dispositivoId);
+      this.ultimaMedicion = medicion ? { valor: medicion.valor } : null;
+
     } catch (error) {
       console.error('Error al cargar el dispositivo:', error);
     }
@@ -79,5 +86,15 @@ export class DispositivoPage implements OnInit {
   verMediciones() {
     this.router.navigate([`/dispositivo`, this.dispositivoId, 'mediciones']);
   }
+
+  async cargarUltimaMedicion() {
+    try {
+      this.ultimaMedicion = await this.dispositivoService.getUltimaMedicion(this.dispositivoId);
+      console.log('Última medición cargada:', this.ultimaMedicion);
+    } catch (error) {
+      console.error('Error al cargar la última medición:', error);
+    }
+  }
+  
     
 }

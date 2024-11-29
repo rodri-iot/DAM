@@ -21,9 +21,20 @@
     </ion-button>
     <ion-button expand="block" (click)="verMediciones()">
       Ver Mediciones
-    </ion-button>
-    
+    </ion-button>    
   </div>
+
+  <div *ngIf="ultimaMedicion">
+    <h2>Última Medición</h2>
+    <p>Humedad: {{ ultimaMedicion.valor }}%</p>
+  </div>
+  <div *ngIf="!ultimaMedicion">
+    <p>No hay mediciones disponibles para este dispositivo.</p>
+
+    <pre>{{ ultimaMedicion | json }}</pre>
+
+  </div>
+
 </ion-content>
 
 

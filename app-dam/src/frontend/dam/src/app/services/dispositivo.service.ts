@@ -34,6 +34,7 @@ export class DispositivoService {
     );
   }
   
+  // Obtener mediciones
   getMediciones(id: number): Promise<{ medicionId: number; fecha: string; valor: string }[]> {
     return firstValueFrom(
       this._http.get<{ medicionId: number; fecha: string; valor: string }[]>(
@@ -41,5 +42,14 @@ export class DispositivoService {
       )
     );
   }  
+  
+  // Obtener la ultima medicion
+  getUltimaMedicion(dispositivoId: number): Promise<{ valor: number; fecha: string } | null> {
+    return firstValueFrom(
+      this._http.get<{ valor: number; fecha: string } | null>(
+        `http://localhost:8000/dispositivo/${dispositivoId}/ultimaMedicion`
+      )
+    );
+  }
   
 }

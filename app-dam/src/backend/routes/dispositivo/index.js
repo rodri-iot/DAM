@@ -94,4 +94,34 @@ routerDispositivo.get('/:id/mediciones', (req, res) => {
     });
 });
 
+// GET (Obtener la última medición por dispositivo ID)
+routerDispositivo.get('/:id/ultimaMedicion', (req, res) => {
+    const dispositivoId = parseInt(req.params.id, 10);
+
+    if (isNaN(dispositivoId)) {
+        return res.status(400).json({ error: 'El ID debe ser un número válido' });
+    }
+
+    const query = `
+        SELECT medicionId, fecha, valor
+        FROM Mediciones
+        WHERE dispositivoId = ?
+        ORDER BY fecha DESC
+        LIMIT 1`;
+
+    pool.query(query, [dispositivoId], (err, result) => {
+        if (err) {
+            console.error('Error al obtener la última medición:', err);
+            return res.status(500).json({ error: 'Error al obtener la última medición' });
+        }
+
+        if (result.length === 0) {
+            return res.status(404).json({ mensaje: 'No se encontró una medición para este dispositivo.' });
+        }
+
+        res.status(200).json(result[0]); // Devuelve solo la última medición
+    });
+});
+
+
 module.exports = routerDispositivo
