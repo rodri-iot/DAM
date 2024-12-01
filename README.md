@@ -114,6 +114,33 @@ DAM/
 └── README.md                    # Documentación principal del proyecto
 ```
 
+## Estrucutra del backend
+``` plaintext
+backend/
+├── routes/
+│   └── dispositivo/             # Define las rutas API relacionadas con dispositivos
+├── sql/
+│   └── smart_home.sql           # Define las tablas y datos iniciales de la base de datos
+├── mysql-connector.js           # Configura la conexión con MySQL
+├── index.js                     # Servidor Express y lógica principal
+├── package.json                 # Dependencias y scripts del backend
+└── README.md                    # Detalles técnicos del backend
+```
+
+## Estructura del frontend
+``` plaintext
+frontend/
+├── src/
+│   ├── app/
+│   │   ├── home/                # Componente principal que lista los dispositivos
+│   │   ├── dispositivo/         # Componente para mostrar detalles de un dispositivo
+│   │   └── services/            # Lógica para interactuar con el backend
+│   ├── assets/                  # Imágenes, íconos y otros recursos estáticos
+│   ├── environments/            # Configuraciones de entornos (desarrollo/producción)
+├── ionic.config.json            # Configuración para el framework Ionic
+├── package.json                 # Dependencias y scripts del frontend
+└── README.md                    # Documentación específica del cliente
+```
 
 ## Funcionalidad de la Aplicación
 
