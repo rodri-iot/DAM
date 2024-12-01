@@ -10,19 +10,37 @@ export class DispositivoService {
 
   constructor(private _http: HttpClient) { }
 
-  // Especifica que el método devuelve un Promise<Dispositivo[]>
+  // Obtener todos los dispositivos
+/*
+  getDispositivos(): Promise<{ dispositivoId: number; nombre: string; ubicacion: string; estadoValvula: number | null }[]> {
+    return firstValueFrom(
+      this._http.get<{ dispositivoId: number; nombre: string; ubicacion: string; estadoValvula: number | null }[]>(
+        'http://localhost:8000/dispositivo'
+      )
+    );
+}
+*/
   getDispositivos(): Promise<Dispositivo[]> {
     return firstValueFrom(
       this._http.get<Dispositivo[]>('http://localhost:8000/dispositivo')
     );
-  }
+}
 
+// Obtener dispositivo por ID
+/*
+  getDispositivoById(id: number): Promise<{ dispositivoId: number; nombre: string; ubicacion: string; estadoValvula: number | null }> {
+    return firstValueFrom(
+      this._http.get<{ dispositivoId: number; nombre: string; ubicacion: string; estadoValvula: number | null }>(
+      `http://localhost:8000/dispositivo/${id}`
+    )
+  );
+}  
+*/
   getDispositivoById(id: number): Promise<Dispositivo> {
     return firstValueFrom(
       this._http.get<Dispositivo>(`http://localhost:8000/dispositivo/${id}`)
     );
-  }
-  
+}
 
   // Cambiar el estado de la valvula  
   cambiarEstadoValvula(id: number, apertura: boolean): Promise<void> {
@@ -44,12 +62,13 @@ export class DispositivoService {
   }  
   
   // Obtener la ultima medicion
-  getUltimaMedicion(dispositivoId: number): Promise<{ valor: number; fecha: string } | null> {
+  getUltimaMedicion(dispositivoId: number): Promise<{ valor: number, fecha: string } | null> {
     return firstValueFrom(
-      this._http.get<{ valor: number; fecha: string } | null>(
+      this._http.get<{ valor: number, fecha: string } | null>(
         `http://localhost:8000/dispositivo/${dispositivoId}/ultimaMedicion`
       )
     );
   }
+
   
 }

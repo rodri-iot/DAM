@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonList, IonToolbar, IonHeader, IonTitle, IonSpinner } from '@ionic/angular/standalone';
 import { CommonModule } from '@angular/common';
 import { IonContent } from '@ionic/angular/standalone';
+import { IonItem, IonLabel } from '@ionic/angular/standalone';
 
 @Component({
   selector: 'app-home',
@@ -22,6 +23,8 @@ import { IonContent } from '@ionic/angular/standalone';
     IonCardSubtitle,
     IonList,
     IonSpinner,
+    IonItem,
+    IonLabel,
     CommonModule,
   ],
 })

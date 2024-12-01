@@ -37,7 +37,7 @@ import { CommonModule } from '@angular/common';
 export class DispositivoPage implements OnInit {
   dispositivo!: Dispositivo;
   dispositivoId!: number;
-  ultimaMedicion: { valor: number } | null = null;
+  ultimaMedicion: { valor: number, fecha: string } | null = null;
 
 
   constructor(
@@ -56,45 +56,55 @@ export class DispositivoPage implements OnInit {
 
   async cargarDispositivo() {
     try {
-      this.dispositivo = await this.dispositivoService.getDispositivoById(
-        this.dispositivoId
-      );
-
-      // Obtener la última medición del dispositivo
-      const medicion = await this.dispositivoService.getUltimaMedicion(this.dispositivoId);
-      this.ultimaMedicion = medicion ? { valor: medicion.valor } : null;
-
+        // Obtener los detalles del dispositivo, incluyendo el estado de la válvula
+        this.dispositivo = await this.dispositivoService.getDispositivoById(this.dispositivoId);
+    
+        // Obtener la última medición del dispositivo
+        const ultimaMedicionData = await this.dispositivoService.getUltimaMedicion(this.dispositivoId);
+        this.ultimaMedicion = ultimaMedicionData
+            ? {
+                valor: ultimaMedicionData.valor,
+                fecha: new Date(ultimaMedicionData.fecha).toLocaleString('es-ES'), // Formatea fecha y hora
+            }
+            : null;
+    
     } catch (error) {
-      console.error('Error al cargar el dispositivo:', error);
+        console.error('Error al cargar el dispositivo o la última medición:', error);
+        this.ultimaMedicion = null; // Resetea la última medición en caso de error
     }
-  }
+}
 
+  
+  
+  
 
   async cambiarEstadoValvula(apertura: boolean) {
     try {
-      await this.dispositivoService.cambiarEstadoValvula(
-        this.dispositivoId,
-        apertura
-      );
+      await this.dispositivoService.cambiarEstadoValvula(this.dispositivoId, apertura);
       alert(`Válvula ${apertura ? 'abierta' : 'cerrada'} correctamente`);
+      await this.cargarDispositivo(); // Actualiza la información del dispositivo
     } catch (error) {
       console.error('Error al cambiar el estado de la válvula:', error);
       alert('No se pudo cambiar el estado de la válvula.');
     }
   }
+  
 
   verMediciones() {
     this.router.navigate([`/dispositivo`, this.dispositivoId, 'mediciones']);
   }
 
+
   async cargarUltimaMedicion() {
     try {
-      this.ultimaMedicion = await this.dispositivoService.getUltimaMedicion(this.dispositivoId);
-      console.log('Última medición cargada:', this.ultimaMedicion);
+      const medicion = await this.dispositivoService.getUltimaMedicion(this.dispositivoId);
+      this.ultimaMedicion = medicion ? { valor: medicion.valor, fecha: medicion.fecha } : null;
     } catch (error) {
       console.error('Error al cargar la última medición:', error);
+      this.ultimaMedicion = null;
     }
   }
+
   
     
 }

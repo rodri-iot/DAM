@@ -8,14 +8,25 @@ var pool = require('../../mysql-connector');
 
 // GET (Obtener todos los dispositivos)
 routerDispositivo.get('/', function(req, res) {
-    pool.query('Select * from Dispositivos', function(err, result, fields) {
+    const query = `
+        SELECT d.dispositivoId, d.nombre, d.ubicacion, d.electrovalvulaId,
+               COALESCE((SELECT apertura 
+                         FROM Log_Riegos 
+                         WHERE electrovalvulaId = d.electrovalvulaId 
+                         ORDER BY fecha DESC 
+                         LIMIT 1), 0) AS estadoValvula
+        FROM Dispositivos d`;
+
+    pool.query(query, function(err, result, fields) {
         if (err) {
             console.error('Error al consultar dispositivos:', err);
             return res.status(400).send(err);
         }
         res.status(200).send(result);
     });
-})
+});
+
+
 
 // GET (Obtener un dispositivo por id)
 routerDispositivo.get('/:id', (req, res) => {
@@ -26,7 +37,10 @@ routerDispositivo.get('/:id', (req, res) => {
 
     const query = `
         SELECT d.dispositivoId, d.nombre AS dispositivoNombre, d.ubicacion,
-               e.electrovalvulaId, e.nombre AS electrovalvulaNombre
+               e.electrovalvulaId, e.nombre AS electrovalvulaNombre,
+               (SELECT apertura FROM Log_Riegos
+                WHERE electrovalvulaId = e.electrovalvulaId
+                ORDER BY fecha DESC LIMIT 1) AS estadoValvula
         FROM Dispositivos d
         INNER JOIN Electrovalvulas e ON d.electrovalvulaId = e.electrovalvulaId
         WHERE d.dispositivoId = ?`;
@@ -42,6 +56,8 @@ routerDispositivo.get('/:id', (req, res) => {
         res.status(200).json(result[0]);
     });
 });
+
+
 
 // POST (Actualizar estado de la válvula)
 routerDispositivo.post('/:id/valvula', (req, res) => {
@@ -122,6 +138,7 @@ routerDispositivo.get('/:id/ultimaMedicion', (req, res) => {
         res.status(200).json(result[0]); // Devuelve solo la última medición
     });
 });
+
 
 
 module.exports = routerDispositivo

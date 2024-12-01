@@ -8,12 +8,15 @@
 
 <ion-content [fullscreen]="true">
   <ion-spinner *ngIf="isLoading"></ion-spinner>
-  <ion-list *ngIf="!isLoading">
-    <ion-card *ngFor="let dispositivo of dispositivos" (click)="verDetalle(dispositivo.dispositivoId)">
-      <ion-card-header>
-        <ion-card-title>{{ dispositivo.nombre }}</ion-card-title>
-        <ion-card-subtitle>{{ dispositivo.ubicacion }}</ion-card-subtitle>
-      </ion-card-header>
-    </ion-card>
+  <ion-list>
+    <ion-item *ngFor="let dispositivo of dispositivos" (click)="verDetalle(dispositivo.dispositivoId)">
+      <ion-label>
+        <h2>{{ dispositivo.nombre }}</h2>
+        <p>Ubicación: {{ dispositivo.ubicacion }}</p>
+        <p>Estado de la válvula: {{ dispositivo.estadoValvula === 1 ? 'Abierta' : 'Cerrada' }}</p>
+      </ion-label>
+    </ion-item>
   </ion-list>
+  
 </ion-content>
+
