@@ -15,6 +15,9 @@
         <p>Ubicación: {{ dispositivo.ubicacion }}</p>
         <p>Estado de la válvula: {{ dispositivo.estadoValvula === 1 ? 'Abierta' : 'Cerrada' }}</p>
       </ion-label>
+      <ion-button fill="outline" slot="end" (click)="verDetalle(dispositivo.dispositivoId)">
+        Ver Detalles
+      </ion-button>
     </ion-item>
   </ion-list>
   

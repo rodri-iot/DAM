@@ -12,6 +12,8 @@ import {
   IonCardHeader,
   IonCardTitle,
   IonCardSubtitle,
+  IonButtons,
+  IonIcon,
 } from '@ionic/angular/standalone';
 import { CommonModule } from '@angular/common';
 
@@ -31,6 +33,8 @@ import { CommonModule } from '@angular/common';
     IonCardHeader,
     IonCardTitle,
     IonCardSubtitle,
+    IonButtons,
+    IonIcon,
     CommonModule,
   ],
 })
@@ -105,6 +109,9 @@ export class DispositivoPage implements OnInit {
     }
   }
 
-  
+  // Método para regresar al inicio
+  volverAlInicio() {
+    this.router.navigate(['/home']);
+  }
     
 }

@@ -2,10 +2,23 @@ import { Component, OnInit } from '@angular/core';
 import { DispositivoService } from '../services/dispositivo.service';
 import { Dispositivo } from '../interfaces/dispositivo';
 import { Router } from '@angular/router';
-import { IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonList, IonToolbar, IonHeader, IonTitle, IonSpinner } from '@ionic/angular/standalone';
 import { CommonModule } from '@angular/common';
-import { IonContent } from '@ionic/angular/standalone';
-import { IonItem, IonLabel } from '@ionic/angular/standalone';
+import {
+  IonCard,
+  IonCardHeader,
+  IonCardTitle,
+  IonCardSubtitle,
+  IonList,
+  IonToolbar,
+  IonHeader,
+  IonTitle,
+  IonSpinner,
+  IonContent,
+  IonItem,
+  IonLabel,
+  IonButton,
+  IonIcon, // Agregado
+} from '@ionic/angular/standalone';
 
 @Component({
   selector: 'app-home',
@@ -25,6 +38,8 @@ import { IonItem, IonLabel } from '@ionic/angular/standalone';
     IonSpinner,
     IonItem,
     IonLabel,
+    IonButton,
+    IonIcon,
     CommonModule,
   ],
 })
@@ -55,4 +70,5 @@ export class HomePage implements OnInit {
   verDetalle(dispositivoId: number) {
     this.router.navigate([`/dispositivo`, dispositivoId]); // Navega a /dispositivo/:id
   }
+
 }
