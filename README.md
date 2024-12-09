@@ -1,4 +1,6 @@
 # DAM - Dispositivos IoT
+# Desarrollo de aplicaciones multiplataforma
+# Especialización IoT - FIUBA
 
 Esta es una aplicación multiplataforma para gestionar dispositivos IoT, desarrollada con **Ionic** para el frontend y **Node.js** para el backend. Permite visualizar dispositivos, gestionar su estado y monitorear sus mediciones.
 
@@ -10,7 +12,6 @@ Esta es una aplicación multiplataforma para gestionar dispositivos IoT, desarro
 4. [Instalación](#instalación)
 5. [Uso](#uso)
 6. [Contribución](#contribución)
-7. [Licencia](#licencia)
 
 ## Descripción
 
@@ -59,16 +60,24 @@ Sigue estos pasos para configurar el entorno de desarrollo:
 - Ejecuta el script SQL proporcionado en /backend/sql/smart_home.sql para crear las tablas necesarias.
 - Actualiza las credenciales de conexión en mysql-connector.js.
 
-4. **Iniciar el servidor backend:**
+4. **Iniciar el contenedor de docker**
+
+Se debe levantar el archivo de doocker-coompose.yml
+
+   ```bash
+   docker-compose up
+   ```
+
+5. **Iniciar el servidor backend:**
     ```bash
     npm start
 
-5. **Instalar dependencias del frontend:**
+6. **Instalar dependencias del frontend:**
     ```bash
     cd ../frontend
     npm install
 
-6. **Iniciar la aplicación frontend:**
+7. **Iniciar la aplicación frontend:**
     ```bash
     ionic serve
 
@@ -237,8 +246,23 @@ El backend genera mediciones aleatorias para los dispositivos registrados cada 5
 
   setInterval(generarMediciones, 300000); // Ejecutar cada 5 minutos
 
-    
+## Contribución
 
+¡Las contribuciones son bienvenidas! Para contribuir a este proyecto, sigue estos pasos:
+
+1. Fork este repositorio.
+2. Crea una nueva rama para tu función o corrección de errores.
+3. Realiza los cambios y asegúrate de que las pruebas pasen.
+4. Envía una solicitud de extracción.
+
+Tipos de contribuciones aceptadas:
+
+- Nuevas funcionalidades: ¡Ideas para nuevas características son siempre bienvenidas!
+- Corrección de errores: Ayuda a mejorar la estabilidad y confiabilidad del proyecto.
+- Mejora de la documentación: Haz que la documentación sea más clara y completa.
+
+    
+# Clases
 # Desarrollo de aplicaciones multiplataforma. Especialización IoT. FIUBA
 
 ## Clase 01
